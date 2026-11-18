@@ -1,0 +1,1085 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>WRLD — Drop 026</title>
+<link rel="icon" href="data:,">
+<meta name="description" content="WRLD — Drop 026. Browse the rack.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Anton&family=Archivo+Black&family=Titan+One&family=Yellowtail&family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F5F5;--neon:#59FF00;--ink:#0b0b0b}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;overscroll-behavior:none;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+#c{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;display:block;touch-action:none;outline:none}
+body.hovering #c{cursor:pointer}
+body.detail #c{cursor:zoom-out}
+body.detail.ongarment #c{cursor:pointer}
+button{font-family:inherit;color:inherit}
+#logo{position:fixed;top:clamp(14px,2.6vh,28px);left:50%;transform:translateX(-50%);width:clamp(96px,9.5vw,138px);z-index:7;cursor:pointer;filter:drop-shadow(0 8px 14px rgba(89,255,0,.28))}
+#logo svg{width:100%;height:auto;display:block;animation:bob 4.5s ease-in-out infinite;transform-origin:50% 60%;transition:transform .4s cubic-bezier(.3,1.6,.5,1)}
+#logo:hover svg{animation-play-state:paused;transform:scale(1.08) rotate(-3deg)}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-4px) rotate(1.5deg)}}
+.corner{position:fixed;top:clamp(18px,3vh,30px);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;z-index:7;display:flex;gap:16px;align-items:center}
+.corner.l{left:clamp(16px,2.4vw,32px)}.corner.r{right:clamp(16px,2.4vw,32px)}
+.corner a,.corner button{background:none;border:0;cursor:pointer;text-decoration:none;color:inherit;font:inherit;letter-spacing:inherit}
+.corner .dot{width:7px;height:7px;border-radius:50%;background:var(--neon);box-shadow:0 0 0 2px #111;display:inline-block;margin-right:6px;vertical-align:1px}
+#backBtn{display:none}
+body.detail #backBtn{display:inline}
+body.detail .corner.l .drop{display:none}
+#bar{position:fixed;left:0;right:0;bottom:0;height:calc(30px + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);background:var(--neon);z-index:8;overflow:hidden;display:flex;align-items:center}
+.marquee{display:flex;white-space:nowrap;animation:mq 30s linear infinite;font-size:10.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+.marquee span{padding-right:56px}
+@keyframes mq{to{transform:translateX(-50%)}}
+#avail{position:fixed;left:50%;bottom:calc(50px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:8;background:#fff;border:1px solid #111;border-radius:999px;padding:12px 28px;font-weight:700;font-size:11px;line-height:1;letter-spacing:.14em;cursor:pointer;transition:background .25s,color .25s,box-shadow .25s;white-space:nowrap}
+#avail:hover{background:#111;color:#fff;box-shadow:0 0 0 4px rgba(89,255,0,.55)}
+#hoverLabel{position:fixed;left:50%;bottom:calc(104px + env(safe-area-inset-bottom));transform:translate(-50%,6px);font-size:12.5px;font-weight:500;color:#2a2a2a;z-index:8;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .25s,transform .35s cubic-bezier(.2,.9,.3,1)}
+#hoverLabel.on{opacity:1;transform:translate(-50%,0)}
+#hint{position:fixed;left:50%;bottom:calc(104px + env(safe-area-inset-bottom));transform:translateX(-50%);font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#8a8a8a;z-index:8;pointer-events:none;transition:opacity .3s;white-space:nowrap}
+#detail{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(98px + env(safe-area-inset-bottom));z-index:8;text-align:center;pointer-events:none;opacity:0;width:min(92vw,620px)}
+body.detail #detail{pointer-events:auto}
+#title{font-weight:900;font-size:clamp(14px,1.45vw,20px);letter-spacing:.02em;text-transform:uppercase;line-height:1.15}
+#meta{margin-top:7px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:11.5px;font-weight:500;color:#555}
+#meta .sep{width:3px;height:3px;border-radius:50%;background:#aaa}
+#swatches{display:flex;gap:7px}
+.sw{width:13px;height:13px;border-radius:50%;border:1px solid rgba(0,0,0,.28);cursor:pointer;padding:0;transition:transform .2s}
+.sw:hover{transform:scale(1.2)}
+.sw.act{box-shadow:0 0 0 2px var(--bg),0 0 0 3.2px #111}
+.toggle{position:relative;display:inline-flex;border:1px solid #111;border-radius:999px;padding:3px;margin-top:12px;background:#fff}
+.toggle button{position:relative;z-index:1;border:0;background:none;font-weight:700;font-size:10px;line-height:1;letter-spacing:.14em;padding:8px 17px;border-radius:999px;cursor:pointer;color:#111;transition:color .35s;min-width:66px}
+.toggle button.act{color:#fff}
+.toggle .knob{position:absolute;top:3px;bottom:3px;left:3px;width:calc(50% - 3px);background:#111;border-radius:999px;transition:transform .5s cubic-bezier(.7,0,.2,1)}
+.toggle.back .knob{transform:translateX(100%)}
+#scrollHint{margin-top:9px;font-size:10px;font-weight:600;letter-spacing:.12em;color:#9a9a9a;text-transform:uppercase}
+.nav{position:fixed;top:44%;width:40px;height:40px;border-radius:50%;border:1px solid #111;background:rgba(255,255,255,.85);backdrop-filter:blur(6px);display:grid;place-items:center;cursor:pointer;z-index:8;opacity:0;pointer-events:none;transition:opacity .35s,background .2s,color .2s}
+.nav svg{width:14px;height:14px}
+.nav:hover{background:#111;color:#fff}
+.nav.prev{left:clamp(10px,2.2vw,30px)}.nav.next{right:clamp(10px,2.2vw,30px)}
+body.detail .nav{opacity:1;pointer-events:auto}
+#sheet{position:fixed;inset:0;z-index:20;pointer-events:none}
+#sheet .scrim{position:absolute;inset:0;background:rgba(10,10,10,.28);opacity:0;transition:opacity .35s}
+#sheet .panel{position:absolute;left:50%;bottom:0;transform:translate(-50%,105%);width:min(560px,100vw);background:#fff;border:1px solid #111;border-bottom:0;border-radius:22px 22px 0 0;padding:22px 22px calc(40px + env(safe-area-inset-bottom));transition:transform .55s cubic-bezier(.2,.9,.2,1);max-height:78vh;overflow:auto}
+#sheet.open{pointer-events:auto}#sheet.open .scrim{opacity:1}#sheet.open .panel{transform:translate(-50%,0)}
+.sh-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.sh-head h3{font-size:16px;font-weight:900;text-transform:uppercase;letter-spacing:.02em}
+.sh-head p{font-size:12px;color:#666;margin-top:4px}
+#shClose{border:1px solid #111;background:#fff;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:14px;flex:none}
+.sizes{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:18px}
+.size{border:1px solid #111;border-radius:12px;padding:12px 0 9px;text-align:center;font-weight:800;font-size:13px;cursor:pointer;background:#fff;transition:background .2s}
+.size small{display:block;font-size:9px;font-weight:600;letter-spacing:.06em;margin-top:5px;color:#666;text-transform:uppercase}
+.size.low small{color:#c26b00}.size.out{opacity:.35;text-decoration:line-through;cursor:not-allowed}
+.size.sel{background:var(--neon)}
+.cta{margin-top:18px;width:100%;border:1px solid #111;background:#111;color:#fff;border-radius:999px;padding:14px;font-weight:800;font-size:11px;letter-spacing:.14em;cursor:pointer}
+.cta.done{background:var(--neon);color:#111}
+.list{margin-top:14px;display:flex;flex-direction:column}
+.row{display:flex;align-items:center;justify-content:space-between;padding:12px 2px;border-top:1px solid #e5e5e5;font-size:13px;font-weight:600;cursor:pointer}
+.row:hover{background:#fafafa}
+.row .st{font-size:10px;font-weight:800;letter-spacing:.1em;padding:5px 9px;border-radius:999px;background:#eee}
+.row .st.ok{background:var(--neon)}
+#loader{position:fixed;inset:0;background:var(--bg);z-index:30;display:grid;place-items:center;transition:opacity .6s}
+#loader .ld{display:flex;flex-direction:column;align-items:center;gap:14px;font-size:10px;font-weight:700;letter-spacing:.2em;color:#777}
+#loader .track{width:120px;height:3px;background:#e2e2e2;border-radius:3px;overflow:hidden}
+#loader .fill{height:100%;width:0;background:#111;transition:width .3s}
+#err{position:fixed;inset:0;display:none;place-items:center;text-align:center;padding:30px;font-weight:600;z-index:40;background:var(--bg)}
+@media (max-width:640px){
+  .corner .hide-sm{display:none}
+  #avail{padding:12px 22px}
+  #hoverLabel{font-size:11.5px}
+  #title{font-size:15px}
+  .nav{top:auto;bottom:calc(150px + env(safe-area-inset-bottom));width:36px;height:36px}
+}
+</style>
+<script type="importmap">
+{"imports":{"three":"https://unpkg.com/three@0.170.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.170.0/examples/jsm/"}}
+</script>
+<script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div id="logo" title="Back to rack" aria-label="Logo">
+  <svg viewBox="0 0 320 130" aria-hidden="true">
+    <defs>
+      <linearGradient id="lg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#e4ffb8"/><stop offset=".42" stop-color="#86ff3c"/><stop offset="1" stop-color="#36d600"/>
+      </linearGradient>
+    </defs>
+    <g font-family="'Titan One',system-ui,sans-serif" font-size="96" text-anchor="middle" transform="rotate(-4 160 70)">
+      <text class="bt" x="160" y="98" fill="#0d3f00" stroke="#0d3f00" stroke-width="20" stroke-linejoin="round" transform="translate(2 9)">WRLD</text>
+      <text class="bt" x="160" y="98" fill="#1d7300" stroke="#1d7300" stroke-width="20" stroke-linejoin="round" transform="translate(1 4)">WRLD</text>
+      <text class="bt" x="160" y="98" fill="#0f4a00" stroke="#0f4a00" stroke-width="18" stroke-linejoin="round">WRLD</text>
+      <text class="bt" x="160" y="98" fill="url(#lg)" stroke="#2fb500" stroke-width="2.5" stroke-linejoin="round">WRLD</text>
+      <text class="bt" x="160" y="98" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="3.2" stroke-linecap="round" stroke-dasharray="10 70" transform="translate(-3 -5)">WRLD</text>
+    </g>
+  </svg>
+</div>
+
+<div class="corner l"><span class="drop"><i class="dot"></i><span class="bn">WRLD</span>® <span class="hide-sm">— Drop 026</span></span><button id="backBtn">← Rack</button></div>
+<div class="corner r"><button id="shopAll" class="hide-sm">Shop all</button><button id="bagBtn">Bag (<span id="bagN">0</span>)</button></div>
+
+<div id="hint">Hover the rack · Click a piece</div>
+<div id="hoverLabel"></div>
+
+<div id="detail">
+  <div id="title"></div>
+  <div id="meta"><span id="vname"></span><span class="sep"></span><span id="price"></span><span class="sep"></span><div id="swatches"></div></div>
+  <div class="toggle" id="toggle"><span class="knob"></span><button data-side="front" class="act">FRONT</button><button data-side="back">BACK</button></div>
+  <div id="scrollHint">Scroll for colours</div>
+</div>
+
+<button class="nav prev" id="prevBtn" aria-label="Previous piece"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 3L5 8l5 5"/></svg></button>
+<button class="nav next" id="nextBtn" aria-label="Next piece"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5"/></svg></button>
+
+<button id="avail">SEE AVAILABILITY</button>
+<div id="bar"><div class="marquee" id="marquee"></div></div>
+
+<div id="sheet"><div class="scrim"></div><div class="panel"><div class="sh-head"><div><h3 id="shTitle"></h3><p id="shSub"></p></div><button id="shClose" aria-label="Close">✕</button></div><div id="shBody"></div></div></div>
+
+<div id="loader"><div class="ld"><span>LOADING THE RACK</span><div class="track"><div class="fill" id="ldFill"></div></div></div></div>
+<div id="err"></div>
+<script type="module">
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+/* ================================================================
+   EASY TO CHANGE: brand name, products, colours, prices
+   ================================================================ */
+const BRAND = 'WRLD';
+const DROP  = 'DROP 026';
+const PRODUCTS = [
+  { id:'ls', name:'Thorn Flame Long Sleeve', shape:'longsleeve', art:'flame', price:'₹3,299',
+    variants:[ {name:'White / Red', base:'#f2f0eb', ink:'#d61f2a', ink2:'#161616'},
+               {name:'Black / Red', base:'#1c1c1e', ink:'#e3262f', ink2:'#f2f0eb'},
+               {name:'Cream / Cobalt', base:'#efe5cf', ink:'#2446d6', ink2:'#161616'} ] },
+  { id:'slogan', name:'Stay Soft Heavyweight Tee', shape:'tee', art:'slogan', price:'₹2,199',
+    variants:[ {name:'Black', base:'#1e1e20', ink:'#ecebe5', ink2:'#59ff00'},
+               {name:'Washed Grey', base:'#6c6c6f', ink:'#f4f4ef', ink2:'#59ff00'},
+               {name:'Chocolate', base:'#4a3327', ink:'#efe4d2', ink2:'#ffb3c7'} ] },
+  { id:'tank', name:'Distressed Painted Logo Tank Top', shape:'tank', art:'tank', price:'₹2,499', wash:true, holes:true,
+    variants:[ {name:'Black', base:'#2b2b2d', ink:'#f1f1ec', ink2:'#f1f1ec'},
+               {name:'Tan', base:'#d9c4a1', ink:'#2a2622', ink2:'#2a2622'},
+               {name:'Acid Grey', base:'#858583', ink:'#141414', ink2:'#f1f1ec'} ] },
+  { id:'varsity', name:'Script Varsity Jacket', shape:'jacket', art:'varsity', price:'₹7,999',
+    variants:[ {name:'Black / White', base:'#141414', sleeve:'#f0ece2', ink:'#f0ece2', ink2:'#c8202c'},
+               {name:'Forest / Cream', base:'#173e28', sleeve:'#efe4cb', ink:'#efe4cb', ink2:'#d9a21b'},
+               {name:'Navy / Grey', base:'#17223e', sleeve:'#c8c8c8', ink:'#e9e9e9', ink2:'#e0362c'} ] },
+  { id:'club', name:'Boxy Club Tee', shape:'tee', art:'club', price:'₹2,199',
+    variants:[ {name:'Sky Blue', base:'#a2c1e8', ink:'#f7d52a', ink2:'#13233f'},
+               {name:'Lilac', base:'#c4b3e6', ink:'#59ff00', ink2:'#1d1240'},
+               {name:'Mint', base:'#a9e2c3', ink:'#ff5a8a', ink2:'#0f2e22'} ] },
+  { id:'jersey', name:'Home Football Jersey', shape:'tee', art:'jersey', price:'₹2,899', rough:.62,
+    variants:[ {name:'Yellow / Green', base:'#f6d81d', ink:'#12924a', ink2:'#0d3a8c'},
+               {name:'White / Royal', base:'#f4f4f1', ink:'#1f49c7', ink2:'#d61f2a'},
+               {name:'Green / Gold', base:'#14924b', ink:'#f6d81d', ink2:'#0d2f1b'} ] },
+  { id:'essential', name:'Essential Logo Tee', shape:'tee', art:'essential', price:'₹1,699',
+    variants:[ {name:'White', base:'#f6f6f3', ink:'#3ad600', ink2:'#111111'},
+               {name:'Black', base:'#1b1b1b', ink:'#59ff00', ink2:'#f6f6f3'},
+               {name:'Neon', base:'#7cff3a', ink:'#111111', ink2:'#111111'} ] },
+];
+
+/* ---------------- DOM ---------------- */
+const $ = s => document.querySelector(s);
+const canvas = $('#c');
+document.title = `${BRAND} — ${DROP}`;
+document.querySelectorAll('#logo .bt').forEach(t => t.textContent = BRAND);
+document.querySelectorAll('.bn').forEach(t => t.textContent = BRAND);
+$('#marquee').innerHTML = Array(2).fill(Array(6).fill(`<span>${BRAND} — ${DROP} — 7 PIECES — LIMITED RUN — WORLDWIDE SHIPPING</span>`).join('')).join('');
+
+const isTouch = matchMedia('(pointer:coarse)').matches;
+if (isTouch) $('#hint').textContent = 'Tap a piece · Drag to browse';
+const TEXR = (isTouch || Math.min(innerWidth, innerHeight) < 640) ? 0.62 : 0.95;
+const setLoad = p => $('#ldFill').style.width = (p * 100).toFixed(0) + '%';
+
+/* ---------------- utils ---------------- */
+function mulberry(a){ return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function hashStr(s){ let h = 2166136261; for (const c of s){ h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+function rgb(h){ h = h.replace('#',''); if (h.length === 3) h = [...h].map(c => c + c).join(''); const n = parseInt(h, 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; }
+function shade(h, a){ const f = v => Math.max(0, Math.min(255, Math.round(a < 0 ? v * (1 + a) : v + (255 - v) * a))); const [r,g,b] = rgb(h); return `rgb(${f(r)},${f(g)},${f(b)})`; }
+function lum(h){ const [r,g,b] = rgb(h); return (0.299*r + 0.587*g + 0.114*b) / 255; }
+const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+const damp = (k, dt) => 1 - Math.exp(-k * dt);
+const titleCase = s => s[0].toUpperCase() + s.slice(1).toLowerCase();
+
+/* ---------------- garment silhouettes (canvas space 1000 x 1150) ---------------- */
+const CW = 1000, CH = 1150, HOOK = 0.30;
+const SHAPES = {
+  tee: { W:1.55, depth:.065, neck:[125,70], tagX:.9,
+    body:n => `M375,48 Q500,${n} 625,48 L770,88 Q790,220 800,372 L808,1118 Q500,1138 192,1118 L200,372 Q210,220 230,88 Z`,
+    neckLine:n => `M375,48 Q500,${n} 625,48`,
+    sleeve:'M768,86 Q905,165 990,335 L866,445 Q835,405 800,372 Q795,220 768,86 Z',
+    sleeveHem:'M970,318 L848,426', armSeam:'M770,88 Q790,220 800,372', hem:'M198,1090 Q500,1110 804,1090',
+    hang:{cy:62, ex:262, ey:116} },
+  tank: { W:1.55, depth:.06, neck:[215,118], tagX:.66,
+    body:n => `M330,40 Q500,${n} 670,40 L765,52 Q770,250 880,430 L888,1118 Q500,1138 112,1118 L120,430 Q230,250 235,52 Z`,
+    neckLine:n => `M330,40 Q500,${n} 670,40`,
+    sleeve:null, arm:'M765,52 Q770,250 880,430', hem:'M118,1090 Q500,1110 882,1090',
+    hang:{cy:52, ex:292, ey:70} },
+  longsleeve: { W:1.55, depth:.065, neck:[118,70], tagX:.8,
+    body:n => `M380,48 Q500,${n} 620,48 L765,88 Q800,200 805,400 L810,1110 Q500,1128 190,1110 L195,400 Q200,200 235,88 Z`,
+    neckLine:n => `M380,48 Q500,${n} 620,48`,
+    sleeve:'M762,86 Q880,120 905,300 L965,1060 L862,1080 L822,430 Q815,300 800,250 Z',
+    cuffY:990, armSeam:'M765,88 Q800,200 805,400', hem:'M196,1084 Q500,1102 804,1084',
+    hang:{cy:62, ex:265, ey:116} },
+  jacket: { W:1.6, depth:.09, neck:[150,92], tagX:.84,
+    body:n => `M368,58 Q500,${n} 632,58 L792,96 Q826,220 830,420 L834,1098 Q500,1110 166,1098 L170,420 Q174,220 208,96 Z`,
+    neckLine:n => `M368,58 Q500,${n} 632,58`,
+    sleeve:'M788,94 Q905,130 932,310 L988,1048 L876,1066 L844,430 Q838,320 826,250 Z',
+    cuffY:985, armSeam:'M792,96 Q826,220 830,420', hem:'M168,1060 Q500,1072 832,1060',
+    hang:{cy:72, ex:240, ey:126} },
+};
+for (const k in SHAPES){
+  const S = SHAPES[k]; S.H = S.W * CH / CW;
+  S.bodyF = new Path2D(S.body(S.neck[0])); S.bodyB = new Path2D(S.body(S.neck[1]));
+  S.neckF = new Path2D(S.neckLine(S.neck[0])); S.neckB = new Path2D(S.neckLine(S.neck[1]));
+  if (S.sleeve) S.sleeveP = new Path2D(S.sleeve);
+  for (const p of ['sleeveHem','armSeam','hem','arm']) if (S[p]) S[p + 'P'] = new Path2D(S[p]);
+}
+function mirrored(ctx, fn){ fn(); ctx.save(); ctx.translate(CW, 0); ctx.scale(-1, 1); fn(); ctx.restore(); }
+function newCanvas(w = CW, h = CH, r = TEXR){ const c = document.createElement('canvas'); c.width = Math.round(w * r); c.height = Math.round(h * r); const x = c.getContext('2d'); x.scale(r, r); return [c, x]; }
+
+const maskCache = {};
+function silhouette(shapeKey, side){
+  const key = shapeKey + side; if (maskCache[key]) return maskCache[key];
+  const S = SHAPES[shapeKey]; const [c, x] = newCanvas(); x.fillStyle = '#000';
+  x.fill(side === 'front' ? S.bodyF : S.bodyB);
+  if (S.sleeveP) mirrored(x, () => x.fill(S.sleeveP));
+  return maskCache[key] = c;
+}
+const _sp = {};
+function sleevesPath(S){
+  const k = S.sleeve; if (_sp[k]) return _sp[k];
+  const p = new Path2D(); p.addPath(S.sleeveP); p.addPath(S.sleeveP, new DOMMatrix([-1, 0, 0, 1, CW, 0])); return _sp[k] = p;
+}
+
+/* height map (inflation) from silhouette — blurred mask */
+const hmCache = {};
+function heightMap(shapeKey){
+  if (hmCache[shapeKey]) return hmCache[shapeKey];
+  const gw = 90, gh = Math.round(90 * CH / CW);
+  const c = document.createElement('canvas'); c.width = gw; c.height = gh; const x = c.getContext('2d', { willReadFrequently:true });
+  x.drawImage(silhouette(shapeKey, 'back'), 0, 0, gw, gh);
+  const d = x.getImageData(0, 0, gw, gh).data; let a = new Float32Array(gw * gh);
+  for (let i = 0; i < gw * gh; i++) a[i] = d[i * 4 + 3] / 255;
+  const blur = (src, r) => {
+    const t = new Float32Array(gw * gh), o = new Float32Array(gw * gh);
+    for (let y = 0; y < gh; y++) for (let xx = 0; xx < gw; xx++){ let s = 0; for (let k = -r; k <= r; k++){ const X = xx + k; if (X >= 0 && X < gw) s += src[y * gw + X]; } t[y * gw + xx] = s / (2 * r + 1); }
+    for (let y = 0; y < gh; y++) for (let xx = 0; xx < gw; xx++){ let s = 0; for (let k = -r; k <= r; k++){ const Y = y + k; if (Y >= 0 && Y < gh) s += t[Y * gw + xx]; } o[y * gw + xx] = s / (2 * r + 1); }
+    return o;
+  };
+  a = blur(blur(blur(a, 3), 3), 2);
+  return hmCache[shapeKey] = { gw, gh, a };
+}
+function sampleH(hm, u, v){
+  const x = clamp(u, 0, 1) * (hm.gw - 1), y = clamp(v, 0, 1) * (hm.gh - 1);
+  const x0 = Math.floor(x), y0 = Math.floor(y), x1 = Math.min(x0 + 1, hm.gw - 1), y1 = Math.min(y0 + 1, hm.gh - 1);
+  const fx = x - x0, fy = y - y0, A = hm.a;
+  const val = A[y0*hm.gw+x0]*(1-fx)*(1-fy) + A[y0*hm.gw+x1]*fx*(1-fy) + A[y1*hm.gw+x0]*(1-fx)*fy + A[y1*hm.gw+x1]*fx*fy;
+  const t = clamp((val - 0.5) / 0.45, 0, 1); return t * t * (3 - 2 * t);
+}
+
+/* ---------------- texture painting helpers ---------------- */
+let NOISE;
+function makeNoise(){
+  const [c, x] = newCanvas(256, 256, 1); const id = x.createImageData(256, 256); const r = mulberry(7);
+  for (let i = 0; i < 256 * 256; i++){ const v = 128 + (r() - .5) * 255; id.data[i*4] = id.data[i*4+1] = id.data[i*4+2] = v; id.data[i*4+3] = 255; }
+  x.putImageData(id, 0, 0); NOISE = c;
+}
+function fillSleeves(x, S){ if (S.sleeveP) mirrored(x, () => x.fill(S.sleeveP)); }
+
+function fabric(x, S, v, rng, P){
+  x.fillStyle = v.base; x.fillRect(0, 0, CW, CH);
+  if (v.sleeve){ x.fillStyle = v.sleeve; fillSleeves(x, S); }
+  const dark = lum(v.base) < .45;
+  if (P.wash){
+    for (let i = 0; i < 110; i++){
+      const px = rng() * CW, py = rng() * CH, r = 40 + rng() * 170, lite = rng() > .45;
+      const g = x.createRadialGradient(px, py, 0, px, py, r);
+      g.addColorStop(0, lite ? `rgba(255,255,255,${.04 + rng()*.07})` : `rgba(0,0,0,${.05 + rng()*.08})`); g.addColorStop(1, 'rgba(0,0,0,0)');
+      x.fillStyle = g; x.fillRect(px - r, py - r, r * 2, r * 2);
+    }
+  }
+  x.save(); x.globalAlpha = dark ? .05 : .035; x.fillStyle = dark ? '#fff' : '#000';
+  for (let y = 0; y < CH; y += 4) x.fillRect(0, y, CW, 1);
+  x.restore();
+  x.save(); x.globalCompositeOperation = 'overlay'; x.globalAlpha = dark ? .22 : .14; x.fillStyle = x.createPattern(NOISE, 'repeat'); x.fillRect(0, 0, CW, CH); x.restore();
+  const g = x.createLinearGradient(0, 0, CW, 0);
+  g.addColorStop(0, 'rgba(0,0,0,.10)'); g.addColorStop(.25, 'rgba(0,0,0,0)'); g.addColorStop(.75, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,.12)');
+  x.fillStyle = g; x.fillRect(0, 0, CW, CH);
+  const g2 = x.createLinearGradient(0, 0, 0, CH); g2.addColorStop(0, 'rgba(255,255,255,.06)'); g2.addColorStop(.5, 'rgba(0,0,0,0)'); g2.addColorStop(1, 'rgba(0,0,0,.07)');
+  x.fillStyle = g2; x.fillRect(0, 0, CW, CH);
+  x.save(); x.globalAlpha = dark ? .035 : .05;
+  for (let i = 0; i < 9; i++){
+    const px = 220 + rng() * 560; x.strokeStyle = rng() > .5 ? '#000' : '#fff'; x.lineWidth = 6 + rng() * 14;
+    x.beginPath(); x.moveTo(px, 500 + rng() * 300); x.bezierCurveTo(px + (rng() - .5) * 60, 800, px + (rng() - .5) * 80, 950, px + (rng() - .5) * 40, 1140); x.stroke();
+  }
+  x.restore();
+}
+
+function details(x, S, v, side, P){
+  const base = v.base, dark = lum(base) < .45;
+  const stitch = dark ? 'rgba(255,255,255,.26)' : 'rgba(0,0,0,.24)';
+  const seam = dark ? 'rgba(0,0,0,.35)' : 'rgba(0,0,0,.12)';
+  const neck = side === 'front' ? S.neckF : S.neckB;
+  x.save();
+  if (P.shape !== 'jacket'){ x.lineWidth = 30; x.strokeStyle = shade(base, dark ? .06 : -.07); x.stroke(neck); }
+  x.setLineDash([7, 6]); x.lineWidth = 2.2; x.strokeStyle = stitch;
+  x.save(); x.translate(0, 17); x.stroke(neck); x.restore();
+  if (S.hemP) x.stroke(S.hemP);
+  if (S.sleeveHemP) mirrored(x, () => x.stroke(S.sleeveHemP));
+  x.setLineDash([]); x.lineWidth = 3; x.strokeStyle = seam;
+  if (S.armSeamP) mirrored(x, () => x.stroke(S.armSeamP));
+  if (S.armP){
+    x.lineWidth = 24; x.strokeStyle = shade(base, dark ? .06 : -.07); mirrored(x, () => x.stroke(S.armP));
+    x.setLineDash([7,6]); x.lineWidth = 2.2; x.strokeStyle = stitch; mirrored(x, () => { x.save(); x.translate(-15, 6); x.stroke(S.armP); x.restore(); }); x.setLineDash([]);
+  }
+  if (S.cuffY && P.shape !== 'jacket'){
+    x.save(); x.clip(sleevesPath(S));
+    x.fillStyle = shade(base, dark ? .05 : -.05); x.fillRect(0, S.cuffY, CW, CH - S.cuffY);
+    x.strokeStyle = dark ? 'rgba(255,255,255,.07)' : 'rgba(0,0,0,.07)'; x.lineWidth = 3;
+    for (let xx = 800; xx < 1000; xx += 9){ x.beginPath(); x.moveTo(xx, S.cuffY); x.lineTo(xx + 6, CH); x.stroke(); }
+    for (let xx = 0; xx < 200; xx += 9){ x.beginPath(); x.moveTo(xx, S.cuffY); x.lineTo(xx - 6, CH); x.stroke(); }
+    x.restore();
+  }
+  x.restore();
+  if (side === 'back'){
+    x.save(); x.fillStyle = dark ? '#f1f1ec' : '#141414'; const ny = S.neck[1] * .5 + 52;
+    x.fillRect(470, ny - 10, 60, 30); x.fillStyle = dark ? '#141414' : '#f1f1ec'; x.font = `400 15px 'Archivo Black'`; x.textAlign = 'center'; x.fillText(BRAND, 500, ny + 11); x.restore();
+  }
+}
+
+function layer(){ return newCanvas(); }
+function distress(x, rng, n = 900, maxR = 5){
+  x.save(); x.globalCompositeOperation = 'destination-out';
+  for (let i = 0; i < n; i++){ const px = rng() * CW, py = rng() * CH, r = .6 + Math.pow(rng(), 3) * maxR; x.globalAlpha = .5 + rng() * .5; x.beginPath(); x.ellipse(px, py, r * (1 + rng()), r, rng() * 3, 0, Math.PI * 2); x.fill(); }
+  x.globalAlpha = .55; x.lineWidth = 1.2;
+  for (let i = 0; i < 70; i++){ const px = rng() * CW, py = rng() * CH; x.beginPath(); x.moveTo(px, py); x.lineTo(px + (rng() - .5) * 60, py + (rng() - .5) * 14); x.stroke(); }
+  x.restore();
+}
+function splatter(x, rng, col, n, area){
+  x.save(); x.fillStyle = col; x.strokeStyle = col;
+  for (let i = 0; i < n; i++){
+    const px = area[0] + rng() * (area[2] - area[0]), py = area[1] + rng() * (area[3] - area[1]);
+    const r = Math.pow(rng(), 2.4) * 16 + 1.5; x.globalAlpha = .75 + rng() * .25;
+    x.beginPath(); x.arc(px, py, r, 0, Math.PI * 2); x.fill();
+    if (r > 8){
+      for (let k = 0; k < 6; k++){ const a = rng() * 6.28, d = r + 4 + rng() * 22; x.beginPath(); x.arc(px + Math.cos(a) * d, py + Math.sin(a) * d, 1 + rng() * 3, 0, 6.28); x.fill(); }
+      if (rng() > .55){ x.lineWidth = r * .45; x.lineCap = 'round'; x.beginPath(); x.moveTo(px, py); x.lineTo(px + (rng() - .5) * 6, py + 20 + rng() * 60); x.stroke(); }
+    }
+  }
+  x.restore();
+}
+function star(x, cx, cy, r, rot = 0){
+  x.beginPath(); for (let i = 0; i < 10; i++){ const rr = i % 2 ? r * .45 : r, a = rot + i * Math.PI / 5 - Math.PI / 2; x.lineTo(cx + Math.cos(a) * rr, cy + Math.sin(a) * rr); } x.closePath();
+}
+function arcText(x, text, cx, cy, r, draw){
+  const chars = [...text], ws = chars.map(c => x.measureText(c).width); const total = ws.reduce((a, b) => a + b, 0);
+  let a = -total / r / 2; x.textAlign = 'center';
+  chars.forEach((c, i) => { x.save(); x.translate(cx, cy); x.rotate(a + ws[i] / 2 / r); x.translate(0, -r); draw(c); x.restore(); a += ws[i] / r; });
+}
+function flame(x, px, py, w, h, rng){
+  const c = (rng() - .5) * w * .9;
+  x.beginPath(); x.moveTo(px - w / 2, py);
+  x.bezierCurveTo(px - w * .6, py - h * .45, px + c - w * .3, py - h * .62, px + c, py - h);
+  x.bezierCurveTo(px + c + w * .1, py - h * .55, px + w * .65, py - h * .42, px + w / 2, py);
+  x.closePath(); x.fill();
+}
+function flameRow(x, x0, x1, y, hMin, hMax, col, inner, rng){
+  x.fillStyle = col; let px = x0; const seeds = [];
+  while (px < x1){ const w = 50 + rng() * 50, h = hMin + rng() * (hMax - hMin); seeds.push([px, w, h]); px += w * .55; }
+  const r1 = mulberry(seeds.length * 31); seeds.forEach(([p, w, h]) => flame(x, p, y, w, h, r1));
+  if (inner){ x.fillStyle = inner; const r2 = mulberry(seeds.length * 31); seeds.forEach(([p, w, h]) => flame(x, p, y + 4, w * .5, h * .55, r2)); }
+}
+function thornVine(x, x0, y0, x1, y1, col, rng){
+  x.save(); x.strokeStyle = col; x.fillStyle = col; x.lineWidth = 6; x.lineCap = 'round';
+  const N = 60, pts = [];
+  for (let i = 0; i <= N; i++){ const t = i / N; pts.push([x0 + (x1 - x0) * t + Math.sin(t * 18) * 14, y0 + (y1 - y0) * t]); }
+  x.beginPath(); pts.forEach((p, i) => i ? x.lineTo(p[0], p[1]) : x.moveTo(p[0], p[1])); x.stroke();
+  x.beginPath(); pts.forEach((p, i) => { const q = [p[0] + Math.sin(i * .7) * 9, p[1] + 3]; i ? x.lineTo(q[0], q[1]) : x.moveTo(q[0], q[1]); }); x.lineWidth = 3; x.stroke();
+  for (let i = 2; i < N; i += 3){ const [px, py] = pts[i], s = i % 2 ? 1 : -1, l = 12 + rng() * 14;
+    x.beginPath(); x.moveTo(px - 4, py - 4); x.lineTo(px + s * l, py - l * .7); x.lineTo(px + 4, py + 3); x.closePath(); x.fill(); }
+  x.restore();
+}
+
+/* ---------------- original print artwork per product ---------------- */
+const ART = {
+  flame(x, side, v, rng, S){
+    const [lc, l] = layer();
+    if (side === 'front'){
+      l.font = `700 66px 'UnifrakturCook', serif`; l.textAlign = 'center'; l.fillStyle = v.ink; l.fillText(BRAND, 640, 290);
+      l.font = `700 15px Inter`; l.fillText('WORLDWIDE · 26', 640, 318);
+      flameRow(l, 190, 815, 1120, 110, 290, v.ink, v.base, rng);
+    } else {
+      l.font = `700 210px 'UnifrakturCook', serif`; l.textAlign = 'center';
+      l.lineWidth = 10; l.strokeStyle = v.ink2; l.lineJoin = 'round'; l.strokeText(BRAND, 500, 400); l.fillStyle = v.ink; l.fillText(BRAND, 500, 400);
+      l.font = `800 26px Inter`; l.fillStyle = v.ink2; l.fillText('W O R L D W I D E   —   2 0 2 6', 500, 460);
+      flameRow(l, 190, 815, 1120, 180, 470, v.ink, v.base, rng);
+    }
+    mirrored(l, () => thornVine(l, 930, 330, 915, 990, v.ink, rng));
+    mirrored(l, () => { l.save(); l.clip(S.sleeveP); flameRow(l, 860, 975, 1080, 70, 170, v.ink, null, rng); l.restore(); });
+    distress(l, rng, 500, 3); x.drawImage(lc, 0, 0, CW, CH);
+  },
+  slogan(x, side, v, rng){
+    const [lc, l] = layer(); l.textAlign = 'center'; l.fillStyle = v.ink;
+    if (side === 'front'){
+      l.font = `400 138px Anton`; l.fillText('STAY SOFT', 500, 470); l.fillText('MOVE LOUD.', 500, 630);
+      l.beginPath(); l.arc(735, 300, 38, 0, 6.28); l.lineWidth = 5; l.strokeStyle = v.ink; l.stroke();
+      l.font = `400 22px 'Archivo Black'`; l.fillText(BRAND, 735, 308);
+      l.font = `800 19px Inter`; l.fillText(`${BRAND} SOFT GOODS — HEAVYWEIGHT 280 GSM`, 500, 680);
+      distress(l, rng, 1600, 6);
+    } else {
+      l.font = `400 50px 'Archivo Black'`; l.fillText(BRAND, 500, 215);
+      l.font = `700 17px Inter`; l.fillText('EST. 2026 · HANDLE WITH CARE', 500, 248);
+      star(l, 500, 300, 16); l.fill();
+      distress(l, rng, 500, 4);
+    }
+    x.drawImage(lc, 0, 0, CW, CH);
+  },
+  tank(x, side, v, rng){
+    const [lc, l] = layer(); l.textAlign = 'center'; l.fillStyle = v.ink;
+    if (side === 'front'){
+      l.font = `400 150px 'Archivo Black'`; l.fillText(BRAND, 500, 500);
+      l.font = `800 27px Inter`; l.fillText('✶ SOFT HEARTS, LOUD WORLD.', 500, 548);
+      distress(l, rng, 1900, 7);
+      x.drawImage(lc, 0, 0, CW, CH);
+      splatter(x, rng, v.ink2, 150, [150, 580, 860, 1120]); splatter(x, rng, v.ink2, 40, [200, 250, 800, 600]);
+    } else {
+      l.font = `400 660px Anton`; l.fillText('26', 500, 930);
+      l.save(); l.globalCompositeOperation = 'destination-out';
+      for (let y = 300; y < 960; y += 34) for (let xx = 160 + ((y / 34) % 2) * 17; xx < 860; xx += 34){ star(l, xx + (rng() - .5) * 5, y + (rng() - .5) * 5, 8 + rng() * 4, rng()); l.fill(); }
+      l.restore();
+      l.lineWidth = 9; l.strokeStyle = v.ink; l.lineJoin = 'round'; l.strokeText('26', 500, 930);
+      l.font = `400 34px 'Archivo Black'`; l.fillText(BRAND, 500, 200);
+      l.font = `800 16px Inter`; l.fillText('SOFT HEARTS · LOUD WORLD', 500, 228);
+      distress(l, rng, 1400, 6);
+      x.drawImage(lc, 0, 0, CW, CH);
+      splatter(x, rng, v.ink2, 120, [150, 250, 860, 1120]);
+    }
+  },
+  varsity(x, side, v, rng, S){
+    const body = side === 'front' ? S.bodyF : S.bodyB, sl = sleevesPath(S), neck = side === 'front' ? S.neckF : S.neckB;
+    const band = (y0, y1, clipP) => { x.save(); x.clip(clipP); x.fillStyle = v.base; x.fillRect(0, y0, CW, y1 - y0);
+      x.fillStyle = v.sleeve; x.fillRect(0, y0 + 16, CW, 9); x.fillStyle = v.ink2; x.fillRect(0, y0 + 31, CW, 9);
+      x.strokeStyle = 'rgba(255,255,255,.05)'; x.lineWidth = 3; for (let xx = 0; xx < CW; xx += 9){ x.beginPath(); x.moveTo(xx, y0); x.lineTo(xx, y1); x.stroke(); } x.restore(); };
+    band(1040, CH, body); band(S.cuffY, CH, sl);
+    x.save(); x.lineWidth = 64; x.strokeStyle = v.base; x.stroke(neck);
+    x.lineWidth = 10; x.strokeStyle = v.sleeve; x.save(); x.translate(0, 14); x.stroke(neck); x.restore();
+    x.strokeStyle = v.ink2; x.save(); x.translate(0, 26); x.stroke(neck); x.restore(); x.restore();
+    x.save(); x.strokeStyle = 'rgba(0,0,0,.18)'; x.lineWidth = 3; mirrored(x, () => x.stroke(S.armSeamP)); x.restore();
+    const [lc, l] = layer();
+    if (side === 'front'){
+      x.save(); x.strokeStyle = 'rgba(0,0,0,.55)'; x.lineWidth = 5; x.beginPath(); x.moveTo(500, S.neck[0] + 6); x.lineTo(500, 1090); x.stroke(); x.restore();
+      for (let i = 0; i < 6; i++){ const y = 230 + i * 150; x.fillStyle = shade(v.sleeve, -.15); x.beginPath(); x.arc(530, y, 15, 0, 6.28); x.fill(); x.fillStyle = v.sleeve; x.beginPath(); x.arc(530, y, 10, 0, 6.28); x.fill(); }
+      l.font = `400 170px 'Archivo Black'`; l.textAlign = 'center'; l.lineJoin = 'round';
+      l.lineWidth = 34; l.strokeStyle = v.sleeve; l.strokeText(BRAND[0], 330, 470);
+      l.lineWidth = 16; l.strokeStyle = v.ink2; l.strokeText(BRAND[0], 330, 470);
+      l.fillStyle = v.sleeve; l.fillText(BRAND[0], 330, 470);
+      l.save(); l.translate(700, 470); l.rotate(-.2); l.font = `400 128px Yellowtail`; l.textAlign = 'center';
+      l.lineWidth = 16; l.strokeStyle = v.ink2; l.strokeText(titleCase(BRAND), 0, 0); l.fillStyle = v.sleeve; l.fillText(titleCase(BRAND), 0, 0); l.restore();
+      l.save(); l.translate(915, 560); l.rotate(.05); l.font = `400 46px 'Archivo Black'`; l.lineWidth = 8; l.strokeStyle = v.base; l.fillStyle = v.ink2; l.strokeText('26', 0, 0); l.fillText('26', 0, 0); l.restore();
+    } else {
+      l.font = `400 126px 'Archivo Black'`; l.lineJoin = 'round';
+      arcText(l, BRAND, 500, 1000, 680, c => { l.lineWidth = 26; l.strokeStyle = v.ink2; l.strokeText(c, 0, 0); l.lineWidth = 12; l.strokeStyle = v.sleeve; l.strokeText(c, 0, 0); l.fillStyle = v.ink2; l.fillText(c, 0, 0); });
+      l.save(); l.translate(500, 590); l.rotate(-.08); l.font = `400 120px Yellowtail`; l.textAlign = 'center'; l.lineWidth = 14; l.strokeStyle = v.ink2; l.strokeText('Athletics', 0, 0); l.fillStyle = v.sleeve; l.fillText('Athletics', 0, 0); l.restore();
+      l.font = `800 22px Inter`; l.fillStyle = v.sleeve; l.textAlign = 'center'; l.fillText('EST. 2026  ·  DEPT. OF SOFT', 500, 680);
+    }
+    distress(l, rng, 200, 2); x.drawImage(lc, 0, 0, CW, CH);
+  },
+  club(x, side, v, rng){
+    const [lc, l] = layer(); l.textAlign = 'center'; l.lineJoin = 'round';
+    if (side === 'front'){
+      l.font = `400 96px 'Archivo Black'`;
+      arcText(l, `${BRAND} CLUB`, 500, 900, 560, c => { l.lineWidth = 16; l.strokeStyle = v.ink2; l.strokeText(c, 0, 0); l.fillStyle = v.ink; l.fillText(c, 0, 0); });
+      l.save(); l.translate(500, 560); l.beginPath(); l.moveTo(-70, -80); l.lineTo(70, -80); l.lineTo(70, 10); l.quadraticCurveTo(70, 70, 0, 105); l.quadraticCurveTo(-70, 70, -70, 10); l.closePath();
+      l.fillStyle = v.ink2; l.fill(); l.lineWidth = 6; l.strokeStyle = v.ink; l.stroke();
+      l.fillStyle = v.ink; star(l, 0, -36, 24); l.fill(); l.font = `400 58px Anton`; l.textAlign = 'center'; l.fillText('07', 0, 64); l.restore();
+      l.font = `800 22px Inter`; l.fillStyle = v.ink2; l.fillText('MEMBERS ONLY · SINCE 2026', 500, 710);
+    } else {
+      l.font = `800 30px Inter`; l.fillStyle = v.ink2; l.fillText(`${BRAND} CLUB — MEMBER`, 500, 240);
+      l.font = `400 360px 'Archivo Black'`; l.lineWidth = 22; l.strokeStyle = v.ink2; l.strokeText('07', 500, 640); l.fillStyle = v.ink; l.fillText('07', 500, 640);
+    }
+    distress(l, rng, 900, 4); x.drawImage(lc, 0, 0, CW, CH);
+  },
+  jersey(x, side, v, rng, S){
+    const body = side === 'front' ? S.bodyF : S.bodyB;
+    x.save(); x.globalAlpha = .1; x.fillStyle = v.ink; for (let xx = 0; xx < CW; xx += 28) x.fillRect(xx, 0, 3, CH); x.restore();
+    x.save(); x.clip(body); x.fillStyle = v.ink; x.fillRect(196, 372, 46, 760); x.fillRect(758, 372, 46, 760); x.fillStyle = v.ink2; x.fillRect(244, 372, 8, 760); x.fillRect(748, 372, 8, 760); x.restore();
+    x.save(); x.lineWidth = 42; x.strokeStyle = v.ink; mirrored(x, () => x.stroke(new Path2D('M985,330 L862,440'))); x.lineWidth = 8; x.strokeStyle = v.ink2; mirrored(x, () => x.stroke(new Path2D('M962,306 L842,414'))); x.restore();
+    x.save(); x.lineCap = 'round'; x.lineJoin = 'round';
+    const vp = side === 'front' ? new Path2D('M372,46 L500,182 L628,46') : S.neckB;
+    x.lineWidth = 40; x.strokeStyle = v.ink; x.stroke(vp); x.lineWidth = 7; x.strokeStyle = v.ink2; x.save(); x.translate(0, 20); x.stroke(vp); x.restore(); x.restore();
+    const [lc, l] = layer(); l.textAlign = 'center'; l.lineJoin = 'round';
+    if (side === 'front'){
+      l.save(); l.translate(640, 300); l.beginPath(); l.moveTo(-42, -50); l.lineTo(42, -50); l.lineTo(42, 8); l.quadraticCurveTo(42, 45, 0, 64); l.quadraticCurveTo(-42, 45, -42, 8); l.closePath(); l.fillStyle = v.ink2; l.fill(); l.lineWidth = 6; l.strokeStyle = v.ink; l.stroke(); l.fillStyle = v.base; star(l, 0, 0, 22); l.fill(); l.restore();
+      l.save(); l.translate(355, 300); l.fillStyle = v.ink2; l.beginPath(); l.moveTo(-34, 22); l.lineTo(6, -38); l.lineTo(0, -6); l.lineTo(34, -22); l.lineTo(-6, 38); l.lineTo(0, 6); l.closePath(); l.fill(); l.restore();
+      l.save(); l.translate(500, 590); l.transform(1, 0, -.22, 1, 0, 0); l.font = `400 172px 'Archivo Black'`; l.lineWidth = 14; l.strokeStyle = v.ink; l.strokeText(BRAND, 0, 0); l.fillStyle = v.ink2; l.fillText(BRAND, 0, 0); l.restore();
+      l.font = `800 22px Inter`; l.fillStyle = v.ink2; l.fillText('FOOTBALL CLUB · HOME 26/27', 500, 640);
+    } else {
+      l.font = `400 92px Anton`; l.fillStyle = v.ink2; l.fillText(BRAND, 500, 310);
+      l.font = `400 470px Anton`; l.lineWidth = 16; l.strokeStyle = v.ink2; l.strokeText('10', 500, 820); l.fillStyle = v.ink; l.fillText('10', 500, 820);
+    }
+    distress(l, rng, 300, 2); x.drawImage(lc, 0, 0, CW, CH);
+  },
+  essential(x, side, v){
+    x.save(); x.textAlign = 'center'; x.lineJoin = 'round';
+    if (side === 'front'){
+      x.font = `400 62px 'Titan One'`; x.lineWidth = 12; x.strokeStyle = shade(v.ink, -.55); x.strokeText(BRAND, 640, 320);
+      x.fillStyle = v.ink; x.fillText(BRAND, 640, 320);
+      x.globalAlpha = .3; x.strokeStyle = '#fff'; x.lineWidth = 1.2; x.save(); x.beginPath(); x.rect(560, 270, 160, 60); x.clip();
+      for (let i = 0; i < 70; i++){ x.beginPath(); x.moveTo(560 + i * 3, 270); x.lineTo(540 + i * 3, 330); x.stroke(); } x.restore();
+    } else {
+      x.font = `400 36px 'Titan One'`; x.lineWidth = 8; x.strokeStyle = shade(v.ink, -.55); x.strokeText(BRAND, 500, 200); x.fillStyle = v.ink; x.fillText(BRAND, 500, 200);
+      x.font = `800 15px Inter`; x.fillStyle = v.ink2; x.globalAlpha = .8; x.fillText('SOFT GOODS — 26', 690, 1050);
+    }
+    x.restore();
+  },
+};
+
+function holes(x, side, rng, S){
+  const n = side === 'front' ? 22 : 10, out = [];
+  for (let i = 0; i < n; i++){
+    let px, py;
+    if (i < n * .6){ const t = rng(); px = 330 + t * 340; const neckY = side === 'front' ? 40 + (1 - Math.pow(2 * t - 1, 2)) * (S.neck[0] - 40) * .5 : 60; py = neckY + 50 + rng() * 110; }
+    else { px = 200 + rng() * 600; py = 600 + rng() * 480; }
+    const r = 6 + rng() * 15; const pts = []; for (let k = 0; k < 9; k++){ const a = k / 9 * 6.28; const rr = r * (.6 + rng() * .7); pts.push([px + Math.cos(a) * rr * 1.25, py + Math.sin(a) * rr]); }
+    out.push(pts);
+  }
+  const path = p => { x.beginPath(); p.forEach((q, i) => i ? x.lineTo(q[0], q[1]) : x.moveTo(q[0], q[1])); x.closePath(); };
+  x.save(); x.strokeStyle = 'rgba(255,255,255,.28)'; x.lineWidth = 5;
+  for (const p of out){ path(p); x.stroke(); }
+  x.globalCompositeOperation = 'destination-out'; x.fillStyle = '#000';
+  for (const p of out){ path(p); x.fill(); }
+  x.restore();
+}
+
+let renderer;
+function paintTexture(pi, vi, side){
+  const P = PRODUCTS[pi], v = P.variants[vi], S = SHAPES[P.shape];
+  const [c, x] = newCanvas();
+  const rng = mulberry(hashStr(P.id + side));
+  fabric(x, S, v, rng, P);
+  details(x, S, v, side, P);
+  ART[P.art](x, side, v, mulberry(hashStr(P.id + side + 'art')), S, P);
+  x.save(); x.globalCompositeOperation = 'destination-in'; x.drawImage(silhouette(P.shape, side), 0, 0, CW, CH); x.restore();
+  if (P.holes) holes(x, side, mulberry(hashStr(P.id + side + 'holes')), S);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  return t;
+}
+const TEX = PRODUCTS.map(p => p.variants.map(() => null));
+function ensureTex(pi, vi){ if (!TEX[pi][vi]) TEX[pi][vi] = { front: paintTexture(pi, vi, 'front'), back: paintTexture(pi, vi, 'back') }; return TEX[pi][vi]; }
+
+/* ---------------- hang tags ---------------- */
+function wrap(x, text, cx, y, maxW, lh){ const words = text.split(' '); let line = ''; for (const w of words){ const t = line ? line + ' ' + w : w; if (x.measureText(t).width > maxW && line){ x.fillText(line, cx, y); y += lh; line = w; } else line = t; } x.fillText(line, cx, y); }
+function tagCanvas(kind, P, v){
+  const [c, x] = newCanvas(256, 512, 1);
+  x.save(); x.beginPath(); x.moveTo(40, 0); x.lineTo(216, 0); x.lineTo(256, 40); x.lineTo(256, 512); x.lineTo(0, 512); x.lineTo(0, 40); x.closePath(); x.clip();
+  if (kind === 'black'){
+    x.fillStyle = '#121212'; x.fillRect(0, 0, 256, 512);
+    x.fillStyle = '#f2f2ee'; x.textAlign = 'center';
+    x.save(); x.translate(128, 270); x.rotate(-Math.PI / 2); x.font = `400 92px 'Archivo Black'`; x.fillText(BRAND, 0, 32); x.restore();
+    x.fillStyle = '#59ff00'; x.fillRect(40, 452, 176, 8);
+    x.font = `800 16px Inter`; x.fillStyle = '#bdbdbd'; x.fillText(DROP, 128, 490);
+  } else {
+    x.fillStyle = '#c9a26a'; x.fillRect(0, 0, 256, 512);
+    x.save(); x.globalCompositeOperation = 'overlay'; x.globalAlpha = .35; x.fillStyle = x.createPattern(NOISE, 'repeat'); x.fillRect(0, 0, 256, 512); x.restore();
+    const r = mulberry(4); x.strokeStyle = 'rgba(90,60,20,.25)'; x.lineWidth = 1; for (let i = 0; i < 80; i++){ const a = r() * 256, b = r() * 512; x.beginPath(); x.moveTo(a, b); x.lineTo(a + (r() - .5) * 30, b + (r() - .5) * 8); x.stroke(); }
+    x.fillStyle = '#2a1f12'; x.textAlign = 'center';
+    x.font = `800 17px Inter`; x.fillText(BRAND + ' SOFT GOODS', 128, 110);
+    x.font = `600 14px Inter`; wrap(x, P.name.toUpperCase(), 128, 148, 200, 18);
+    x.fillRect(36, 222, 184, 2);
+    x.font = `800 15px Inter`; ['XS','S','M','L','XL'].forEach((s, i) => { const px = 48 + i * 40; if (s === 'M'){ x.beginPath(); x.arc(px, 264, 17, 0, 6.28); x.lineWidth = 2; x.strokeStyle = '#2a1f12'; x.stroke(); } x.fillText(s, px, 270); });
+    x.font = `400 40px Anton`; x.fillText(P.price, 128, 350);
+    for (let i = 0; i < 38; i++){ const w = [2, 3, 5][i % 3] * (r() > .5 ? 1 : .6); x.fillRect(46 + i * 4.4, 392, w, 64); }
+    x.font = `600 11px Inter`; x.fillText(v.name.toUpperCase(), 128, 484);
+  }
+  x.restore();
+  x.save(); x.globalCompositeOperation = 'destination-out'; x.beginPath(); x.arc(128, 44, 13, 0, 6.28); x.fill(); x.restore();
+  x.beginPath(); x.arc(128, 44, 17, 0, 6.28); x.lineWidth = 7; x.strokeStyle = kind === 'black' ? '#9a9a9a' : '#b48b4f'; x.stroke();
+  return c;
+}
+
+/* ================================================================
+   THREE SETUP
+   ================================================================ */
+async function boot(){
+  if (window.gsap) gsap.ticker.lagSmoothing(0);
+  try { renderer = new THREE.WebGLRenderer({ canvas, antialias:true, powerPreference:'high-performance' }); }
+  catch (e){ const el = $('#err'); el.style.display = 'grid'; el.textContent = 'WebGL is not available on this device.'; $('#loader').remove(); return; }
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.NoToneMapping;
+  renderer.autoClear = false; renderer.setClearColor(0xF5F5F5, 1);
+  setLoad(.1);
+  await Promise.race([
+    Promise.all(["800 20px Inter","400 20px Anton","400 20px 'Archivo Black'","400 20px 'Titan One'","400 20px Yellowtail","700 20px 'UnifrakturCook'"].map(f => document.fonts.load(f).catch(() => {}))),
+    new Promise(r => setTimeout(r, 4000)),
+  ]);
+  setLoad(.35); makeNoise();
+  await new Promise(r => requestAnimationFrame(r));
+  main();
+}
+
+function main(){
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environmentIntensity = .65;
+const camera = new THREE.PerspectiveCamera(30, innerWidth / innerHeight, .1, 100);
+const T = Math.tan(THREE.MathUtils.degToRad(15));
+const hemi = new THREE.HemisphereLight(0xffffff, 0xcfcfcf, .55);
+const key = new THREE.DirectionalLight(0xffffff, 1.25); key.position.set(-3, 5, 7);
+const rim = new THREE.DirectionalLight(0xffffff, .45); rim.position.set(5, 2, -4);
+for (const l of [hemi, key, rim]){ l.layers.enableAll(); scene.add(l); }
+
+/* rod */
+const rodMat = new THREE.MeshStandardMaterial({ color:0xe6e6e6, metalness:1, roughness:.16, transparent:true });
+const rodG = new THREE.Group(); scene.add(rodG);
+const rod = new THREE.Mesh(new THREE.CylinderGeometry(.03, .03, 1, 40), rodMat); rod.rotation.z = Math.PI / 2; rodG.add(rod);
+const caps = [-1, 1].map(() => { const g = new THREE.Group();
+  g.add(new THREE.Mesh(new THREE.SphereGeometry(.042, 24, 16), rodMat));
+  const arm = new THREE.Mesh(new THREE.CylinderGeometry(.016, .016, .5, 16), rodMat); arm.rotation.x = Math.PI / 2; arm.position.z = -.25; g.add(arm);
+  const plate = new THREE.Mesh(new THREE.CylinderGeometry(.07, .07, .02, 28), rodMat); plate.rotation.x = Math.PI / 2; plate.position.z = -.5; g.add(plate);
+  rodG.add(g); return g; });
+
+/* garment material: cloth bend + ripple in vertex shader, colour-wipe between variants, darker inside */
+function garmentMaterial(tex, U, wipe, map2, rough){
+  const m = new THREE.MeshStandardMaterial({ map:tex, roughness:rough, metalness:0, side:THREE.DoubleSide, alphaTest:.5, envMapIntensity:.8 });
+  m.onBeforeCompile = sh => {
+    Object.assign(sh.uniforms, { uBend:U.uBend, uTime:U.uTime, uRipple:U.uRipple, uH:U.uH, uWipe:wipe, uMap2:map2 });
+    sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nuniform vec2 uBend; uniform float uTime; uniform float uRipple; uniform float uH;')
+      .replace('#include <begin_vertex>', `#include <begin_vertex>
+        float tt = clamp(-(position.y + ${HOOK.toFixed(2)}) / uH, 0.0, 1.0); float t2 = tt*tt;
+        transformed.x += uBend.x * t2; transformed.z += uBend.y * t2;
+        transformed.z += uRipple * sin(position.x*5.0 + uTime*4.2 + tt*7.0) * t2 * 0.045;
+        transformed.x += uRipple * sin(uTime*3.1 + tt*5.0) * t2 * 0.02;`);
+    sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nuniform float uWipe; uniform sampler2D uMap2; uniform float uTime;')
+      .replace('#include <map_fragment>', `#ifdef USE_MAP
+        vec4 tA = texture2D(map, vMapUv); vec4 tB = texture2D(uMap2, vMapUv);
+        float edge = uWipe*1.25 - 0.1 + 0.035*sin(vMapUv.x*16.0 + uTime*3.0);
+        float k = 1.0 - smoothstep(edge-0.035, edge+0.035, 1.0 - vMapUv.y);
+        vec4 sc = mix(tA, tB, uWipe > 0.0 ? k : 0.0);
+        diffuseColor *= sc;
+        if (!gl_FrontFacing) diffuseColor.rgb *= 0.38;
+      #endif`);
+  };
+  m.customProgramCacheKey = () => 'garment-v1';
+  return m;
+}
+
+function bodyGeometry(S, shapeKey, back){
+  const W = S.W, H = S.H, hm = heightMap(shapeKey);
+  const g = new THREE.PlaneGeometry(W, H, 80, 92); g.translate(0, -H / 2 - HOOK, 0);
+  const p = g.attributes.position;
+  for (let i = 0; i < p.count; i++){
+    const u = p.getX(i) / W + .5, v = -(p.getY(i) + HOOK) / H; const h = sampleH(hm, u, v);
+    const fold = (.016 * Math.sin(u * Math.PI * 6 + .7 + (back ? 1.3 : 0)) * v * v + .009 * Math.sin(u * Math.PI * 13 + 2) * v) * h;
+    const belly = .02 * (1 - Math.pow(2 * u - 1, 2)) * h;
+    p.setZ(i, h * S.depth + fold + belly);
+  }
+  if (back) g.rotateY(Math.PI);
+  g.computeVertexNormals();
+  return g;
+}
+
+const woodMat = new THREE.MeshStandardMaterial({ color:0x8a5a33, roughness:.42, metalness:0, envMapIntensity:.9 });
+const metalMat = new THREE.MeshStandardMaterial({ color:0xd8d8d8, metalness:1, roughness:.25 });
+function hangerMeshes(S){
+  const W = S.W, H = S.H, hg = S.hang;
+  const cyf = y => -HOOK - y / CH * H, sx = X => (X / CW - .5) * W;
+  const ex = Math.abs(sx(hg.ex)), cy = cyf(hg.cy), ey = cyf(hg.ey);
+  const curve = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(-ex, ey, 0), new THREE.Vector3(-ex * .55, (ey + cy) / 2 + .012, 0), new THREE.Vector3(0, cy, 0),
+    new THREE.Vector3(ex * .55, (ey + cy) / 2 + .012, 0), new THREE.Vector3(ex, ey, 0)]);
+  const tg = new THREE.TubeGeometry(curve, 60, .024, 12, false); tg.scale(1, 1, .55);
+  const hanger = new THREE.Group(); hanger.add(new THREE.Mesh(tg, woodMat));
+  for (const s of [-1, 1]){ const e = new THREE.Mesh(new THREE.SphereGeometry(.024, 16, 12), woodMat); e.scale.z = .55; e.position.set(s * ex, ey, 0); hanger.add(e); }
+  const hk = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(0, cy + .01, 0), new THREE.Vector3(0, -.16, 0), new THREE.Vector3(0, -.06, .045), new THREE.Vector3(0, .035, .042),
+    new THREE.Vector3(0, .07, 0), new THREE.Vector3(0, .03, -.045), new THREE.Vector3(0, -.025, -.052)]);
+  const hook = new THREE.Mesh(new THREE.TubeGeometry(hk, 60, .0085, 8, false), metalMat);
+  const nut = new THREE.Mesh(new THREE.CylinderGeometry(.018, .022, .035, 16), metalMat); nut.position.y = cy + .02; hanger.add(nut);
+  return { hanger, hook, tip:[ex, ey] };
+}
+
+/* garments */
+const garments = PRODUCTS.map((P, i) => {
+  const S = SHAPES[P.shape];
+  const tex = ensureTex(i, 0); setLoad(.35 + .5 * (i + 1) / PRODUCTS.length);
+  const U = { uBend:{ value:new THREE.Vector2() }, uTime:{ value:0 }, uRipple:{ value:0 }, uH:{ value:S.H } };
+  const wipe = { value:0 }, m2F = { value:tex.front }, m2B = { value:tex.back };
+  const matF = garmentMaterial(tex.front, U, wipe, m2F, P.rough || .9), matB = garmentMaterial(tex.back, U, wipe, m2B, P.rough || .9);
+  const root = new THREE.Group(), swing = new THREE.Group(), turn = new THREE.Group(), flip = new THREE.Group();
+  root.add(swing); swing.add(turn); turn.add(flip);
+  const front = new THREE.Mesh(bodyGeometry(S, P.shape, false), matF), back = new THREE.Mesh(bodyGeometry(S, P.shape, true), matB);
+  flip.add(front, back);
+  const { hanger, hook, tip } = hangerMeshes(S); flip.add(hanger); swing.add(hook);
+  scene.add(root);
+  return { i, P, S, tip, root, swing, turn, flip, front, back, U, wipe, m2F, m2B, matF, matB, variant:0,
+    x:0, y:0, z:0, vx:0, th:0, thv:0, ph:0, phv:0, hover:0, w:.7, turnVel:0, intro:4 + i * .25, wipeTween:null };
+});
+
+/* hang tags (black brand tag + kraft price tag) on strings */
+const tagRoot = new THREE.Group(); tagRoot.scale.setScalar(.001);
+const tagMats = {};
+const tags = [['black', .15, .30, 0, .12], ['kraft', .15, .30, .16, .2]].map(([kind, w, h, dx, len]) => {
+  const pivot = new THREE.Group(); pivot.position.set(dx, 0, dx * .2);
+  const tex = new THREE.CanvasTexture(tagCanvas(kind, PRODUCTS[0], PRODUCTS[0].variants[0])); tex.colorSpace = THREE.SRGBColorSpace;
+  const mat = new THREE.MeshStandardMaterial({ map:tex, side:THREE.DoubleSide, alphaTest:.5, roughness:.8 }); tagMats[kind] = mat;
+  const g = new THREE.PlaneGeometry(w, h); g.translate(0, -h / 2 - len + .025, 0);
+  const mesh = new THREE.Mesh(g, mat); pivot.add(mesh);
+  const lg = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, -len, 0)]);
+  const line = new THREE.Line(lg, new THREE.LineBasicMaterial({ color:0x2a2a2a })); line.frustumCulled = false;
+  pivot.add(line); tagRoot.add(pivot);
+  return { pivot, mesh, line, kind, th:0, thv:0, tw:0, twv:0, len };
+});
+tagRoot.traverse(o => o.layers.set(1));
+function setKraft(g){ const c = tagCanvas('kraft', g.P, g.P.variants[g.variant]); tagMats.kraft.map.image = c; tagMats.kraft.map.needsUpdate = true; }
+function attachTags(g){
+  setKraft(g); g.turn.add(tagRoot); tagRoot.position.set(g.S.tagX, g.tip[1] - .02, .1);
+  for (const t of tags){ // string runs from the hanger tip down to each tag's eyelet
+    const a = t.line.geometry.attributes.position; a.setXYZ(0, g.tip[0] + .03 - g.S.tagX - t.pivot.position.x, .02, -.1 - t.pivot.position.z); a.needsUpdate = true;
+  }
+}
+
+/* post: depth-of-field style blur for the out-of-focus rack */
+const rtOpts = { type:THREE.HalfFloatType };
+const rtSharp = new THREE.WebGLRenderTarget(4, 4, { ...rtOpts, samples:4 });
+const rtA = new THREE.WebGLRenderTarget(4, 4, rtOpts), rtB = new THREE.WebGLRenderTarget(4, 4, rtOpts);
+const quadCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1), quadScene = new THREE.Scene();
+const VS = 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }';
+const blurMat = new THREE.ShaderMaterial({ uniforms:{ tDiffuse:{ value:null }, uDir:{ value:new THREE.Vector2() }, uRes:{ value:new THREE.Vector2() } }, vertexShader:VS,
+  fragmentShader:`uniform sampler2D tDiffuse; uniform vec2 uDir; uniform vec2 uRes; varying vec2 vUv;
+    void main(){ vec2 o1 = uDir*1.3846153846/uRes, o2 = uDir*3.2307692308/uRes;
+      gl_FragColor = texture2D(tDiffuse, vUv)*0.2270270270 + (texture2D(tDiffuse, vUv+o1)+texture2D(tDiffuse, vUv-o1))*0.3162162162 + (texture2D(tDiffuse, vUv+o2)+texture2D(tDiffuse, vUv-o2))*0.0702702703; }`,
+  depthTest:false, depthWrite:false });
+const compMat = new THREE.ShaderMaterial({ uniforms:{ tSharp:{ value:null }, tBlur:{ value:null }, uAmt:{ value:0 }, uFade:{ value:0 }, uBg:{ value:new THREE.Color(0xF5F5F5) } }, vertexShader:VS,
+  fragmentShader:`uniform sampler2D tSharp; uniform sampler2D tBlur; uniform float uAmt; uniform float uFade; uniform vec3 uBg; varying vec2 vUv;
+    void main(){ vec3 s = texture2D(tSharp, vUv).rgb, b = texture2D(tBlur, vUv).rgb;
+      vec3 c = mix(s, b, clamp(uAmt*1.8, 0.0, 1.0)); c = mix(c, uBg, uFade);
+      gl_FragColor = vec4(c, 1.0);
+      #include <colorspace_fragment>
+    }`, depthTest:false, depthWrite:false });
+const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), blurMat); quad.frustumCulled = false; quadScene.add(quad);
+
+/* ---------------- state & layout ---------------- */
+const state = { mode:'rack', sel:-1, leaving:-1, side:'front', blur:0, fade:0, hovered:-1, pan:0, panT:0, introDone:false };
+const L = {};
+const HOVER_SLOT = 1.82;
+function layout(){
+  const w = innerWidth, h = innerHeight, aspect = w / h;
+  renderer.setSize(w, h, false); camera.aspect = aspect; camera.updateProjectionMatrix();
+  const pr = renderer.getPixelRatio(), W = Math.floor(w * pr), H = Math.floor(h * pr);
+  rtSharp.setSize(W, H); rtA.setSize(Math.max(1, W >> 1), Math.max(1, H >> 1)); rtB.setSize(Math.max(1, W >> 1), Math.max(1, H >> 1));
+  L.portrait = aspect < .9; L.aspect = aspect;
+  L.slot = L.portrait ? .6 : .66;
+  const span = HOOK + 1.85;
+  const rackIdle = PRODUCTS.length * L.slot + (L.portrait ? 0 : HOVER_SLOT - L.slot);
+  const dH = span / ((L.portrait ? .4 : .48) * 2 * T), dW = (rackIdle + .9) / (.94 * 2 * T * aspect);
+  L.D = L.portrait ? Math.max(dH, Math.min(dW, dH * 1.28)) : Math.max(dH, dW);
+  L.camY = -(L.portrait ? .26 : .30) * L.D * T;
+  L.halfW = L.D * T * aspect;
+  L.dSel = Math.max(span / ((L.portrait ? .5 : .56) * 2 * T), (1.62 + (L.portrait ? .62 : .9)) / (.9 * 2 * T * aspect));
+  L.selX = L.portrait ? -.13 : 0;
+  L.selCenterY = L.camY + (L.portrait ? .2 : .14) * L.dSel * T;
+  const rodLen = Math.max(L.halfW * 2 * .95, rackIdle + .8);
+  rod.scale.y = rodLen; caps[0].position.x = -rodLen / 2; caps[1].position.x = rodLen / 2;
+  camera.position.set(0, L.camY, L.D); camera.lookAt(0, L.camY, 0);
+}
+layout(); addEventListener('resize', layout);
+
+/* ---------------- pointer / touch ---------------- */
+const ptr = { x:innerWidth / 2, y:innerHeight / 2, nx:0, ny:0, wx:0, wy:-9, has:false, down:false, sx:0, sy:0, st:0, moved:false, lastPanX:0 };
+const _v = new THREE.Vector3(), _d = new THREE.Vector3();
+function toWorld(cx, cy){
+  const nx = cx / innerWidth * 2 - 1, ny = -(cy / innerHeight) * 2 + 1;
+  _v.set(nx, ny, .5).unproject(camera); _d.copy(_v).sub(camera.position).normalize();
+  const t = -camera.position.z / _d.z; return [camera.position.x + _d.x * t, camera.position.y + _d.y * t, nx, ny];
+}
+function garmentAt(wx, wy){
+  if (wy > .2 || wy < -(HOOK + 1.95)) return -1;
+  let best = -1, bd = 1e9;
+  for (const g of garments){ const d = Math.abs(wx - g.root.position.x); if (d < g.w / 2 && d < bd){ bd = d; best = g.i; } }
+  return best;
+}
+canvas.addEventListener('pointerdown', e => {
+  ptr.down = true; ptr.sx = e.clientX; ptr.sy = e.clientY; ptr.st = performance.now(); ptr.moved = false; ptr.lastPanX = e.clientX;
+  try { canvas.setPointerCapture(e.pointerId); } catch (_){}
+  onMove(e);
+});
+canvas.addEventListener('pointermove', onMove);
+canvas.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse'){ ptr.has = false; setHover(-1); } });
+canvas.addEventListener('pointerup', e => {
+  if (!ptr.down) return; ptr.down = false;
+  const dx = e.clientX - ptr.sx, dy = e.clientY - ptr.sy, dt = performance.now() - ptr.st;
+  if (Math.hypot(dx, dy) < 10 && dt < 600){ tap(e.clientX, e.clientY); return; }
+  if (state.mode === 'detail' && e.pointerType !== 'mouse'){
+    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) cycleVariant(dx < 0 ? 1 : -1);
+    else if (dy > 70) exitDetail();
+    else if (dy < -60) cycleVariant(1);
+  }
+});
+canvas.addEventListener('pointercancel', () => { ptr.down = false; });
+
+function onMove(e){
+  const [wx, wy, nx, ny] = toWorld(e.clientX, e.clientY);
+  const dwx = ptr.has ? wx - ptr.wx : 0, dwy = ptr.has ? wy - ptr.wy : 0;
+  Object.assign(ptr, { x:e.clientX, y:e.clientY, nx, ny, wx, wy, has:true });
+  if (ptr.down && Math.hypot(e.clientX - ptr.sx, e.clientY - ptr.sy) > 10) ptr.moved = true;
+  if (Math.abs(dwx) < 1.5){
+    for (const g of garments){
+      if (state.mode === 'detail' && g.i !== state.sel) continue;
+      const gx = g.root.position.x, top = g.root.position.y, bottom = top - HOOK - g.S.H;
+      const half = state.mode === 'detail' ? g.S.W * .6 : Math.max(g.w * .55, .35);
+      if (Math.abs(wx - gx) < half && wy < top + .1 && wy > bottom - .2){
+        const depth = clamp((top - wy) / (top - bottom), .15, 1);
+        const gain = state.mode === 'detail' ? .35 : 1.25;
+        g.thv += clamp(dwx * 3.2 * depth * gain, -1.6, 1.6);
+        g.phv += clamp((-Math.abs(dwx) * .9 + dwy * .6) * depth * gain, -1, 1);
+      }
+    }
+  }
+  if (state.mode === 'detail') for (const t of tags) t.thv += clamp(dwx * 1.2, -.6, .6);
+  if (ptr.down && e.pointerType !== 'mouse' && state.mode === 'rack' && ptr.moved){
+    const pxToWorld = (2 * L.halfW) / innerWidth; state.panT += (e.clientX - ptr.lastPanX) * pxToWorld * 1.1; ptr.lastPanX = e.clientX;
+  }
+  if (state.mode === 'rack' && e.pointerType === 'mouse') setHover(garmentAt(wx, wy));
+  if (state.mode === 'detail' && e.pointerType === 'mouse') document.body.classList.toggle('ongarment', hitSelected(e.clientX, e.clientY));
+}
+const ray = new THREE.Raycaster(); ray.layers.enableAll();
+function hitSelected(cx, cy){
+  if (state.sel < 0) return false; const g = garments[state.sel];
+  ray.setFromCamera(new THREE.Vector2(cx / innerWidth * 2 - 1, -(cy / innerHeight) * 2 + 1), camera);
+  return ray.intersectObjects([g.front, g.back, ...tags.map(t => t.mesh)], false).length > 0;
+}
+function tap(cx, cy){
+  const [wx, wy, nx] = toWorld(cx, cy);
+  if (state.mode === 'rack'){ const i = garmentAt(wx, wy); if (i >= 0) select(i); return; }
+  if (hitSelected(cx, cy)) return setSide(state.side === 'front' ? 'back' : 'front');
+  if (nx < -.62) return step(-1);
+  if (nx > .62) return step(1);
+  exitDetail();
+}
+
+let wheelAcc = 0, wheelLast = 0, wheelLock = 0;
+addEventListener('wheel', e => {
+  if (e.target.closest && e.target.closest('#sheet')) return;
+  e.preventDefault(); const now = performance.now();
+  if (state.mode === 'rack'){ state.panT -= (e.deltaX || e.deltaY) * .004; return; }
+  if (now - wheelLast > 220) wheelAcc = 0; wheelLast = now; wheelAcc += e.deltaY;
+  if (now < wheelLock) return;
+  if (wheelAcc > 50){ wheelAcc = 0; wheelLock = now + 750; cycleVariant(1); }
+  else if (wheelAcc < -50){ wheelAcc = 0; wheelLock = now + 600; exitDetail(); }
+}, { passive:false });
+addEventListener('keydown', e => {
+  if ($('#sheet').classList.contains('open')){ if (e.key === 'Escape') closeSheet(); return; }
+  if (state.mode === 'detail'){
+    if (e.key === 'Escape' || e.key === 'ArrowUp') exitDetail();
+    else if (e.key === 'ArrowRight') step(1); else if (e.key === 'ArrowLeft') step(-1);
+    else if (e.key === 'ArrowDown') cycleVariant(1);
+    else if (e.key.toLowerCase() === 'f') setSide('front'); else if (e.key.toLowerCase() === 'b') setSide('back');
+  } else if (e.key === 'Enter' && state.hovered >= 0) select(state.hovered);
+  else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft'){ const n = PRODUCTS.length, d = e.key === 'ArrowRight' ? 1 : -1; setHover(state.hovered < 0 ? (d > 0 ? 0 : n - 1) : (state.hovered + d + n) % n); }
+});
+
+/* ---------------- UI ---------------- */
+const hoverLabel = $('#hoverLabel'), hint = $('#hint');
+function setHover(i){
+  if (state.mode !== 'rack') i = -1;
+  if (i === state.hovered) return;
+  state.hovered = i; document.body.classList.toggle('hovering', i >= 0);
+  if (i >= 0){ const g = garments[i]; hoverLabel.textContent = `[${g.P.name} - ${g.P.variants[g.variant].name}]`; hoverLabel.classList.add('on'); hint.style.opacity = 0; g.phv -= .6; }
+  else { hoverLabel.classList.remove('on'); if (state.mode === 'rack') hint.style.opacity = 1; }
+}
+function updateDetailUI(){
+  const g = garments[state.sel]; if (!g) return; const v = g.P.variants[g.variant];
+  $('#title').textContent = g.P.name; $('#vname').textContent = v.name; $('#price').textContent = g.P.price;
+  const sw = $('#swatches'); sw.innerHTML = '';
+  g.P.variants.forEach((vv, k) => { const b = document.createElement('button'); b.className = 'sw' + (k === g.variant ? ' act' : ''); b.title = vv.name; b.setAttribute('aria-label', vv.name);
+    b.style.background = vv.sleeve ? `linear-gradient(90deg, ${vv.base} 50%, ${vv.sleeve} 50%)` : vv.base;
+    b.onclick = () => setVariant(k); sw.appendChild(b); });
+  const tg = $('#toggle'); tg.classList.toggle('back', state.side === 'back');
+  tg.querySelectorAll('button').forEach(b => b.classList.toggle('act', b.dataset.side === state.side));
+  $('#scrollHint').textContent = isTouch ? 'Swipe for colours · Swipe down to close' : 'Scroll for colours · Scroll up to close';
+}
+$('#toggle').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setSide(b.dataset.side); });
+$('#prevBtn').onclick = () => step(-1); $('#nextBtn').onclick = () => step(1);
+$('#backBtn').onclick = () => exitDetail(); $('#logo').onclick = () => { closeSheet(); exitDetail(); };
+$('#shopAll').onclick = () => openSheet(true);
+let bag = 0; $('#bagBtn').onclick = () => openSheet(true);
+
+function isTagChild(o){ for (let p = o; p; p = p.parent) if (p === tagRoot) return true; return false; }
+function setLayer(g, l){ g.root.traverse(o => { if (!isTagChild(o)) o.layers.set(l); }); }
+
+function select(i){
+  if (state.mode === 'detail'){ if (state.sel !== i) switchTo(i); return; }
+  if (state.leaving >= 0 && state.leaving !== i) setLayer(garments[state.leaving], 0);
+  state.leaving = -1; state.mode = 'detail'; state.sel = i; state.side = 'front';
+  setHover(-1); hint.style.opacity = 0; document.body.classList.add('detail');
+  const g = garments[i]; setLayer(g, 1); gsap.killTweensOf(g.flip.rotation); g.flip.rotation.y = 0; g.phv += 1.2; g.thv += (Math.random() - .5);
+  attachTags(g); showTags();
+  gsap.to(state, { blur:1, fade:1, duration:1.15, ease:'power2.inOut', overwrite:'auto' });
+  updateDetailUI();
+  gsap.fromTo('#detail', { opacity:0, y:14 }, { opacity:1, y:0, duration:.6, delay:.45, ease:'power3.out', overwrite:'auto' });
+  pregen(i);
+}
+function switchTo(i){
+  const old = garments[state.sel]; setLayer(old, 0); gsap.to(old.flip.rotation, { y:0, duration:.6, ease:'power2.out', overwrite:true });
+  state.sel = i; state.side = 'front'; const g = garments[i]; setLayer(g, 1); gsap.killTweensOf(g.flip.rotation); g.flip.rotation.y = 0; g.thv += (i > old.i ? -1 : 1) * 1.2;
+  attachTags(g); showTags();
+  gsap.fromTo('#detail', { opacity:0, y:8 }, { opacity:1, y:0, duration:.5, delay:.2, ease:'power3.out', overwrite:'auto' });
+  updateDetailUI(); pregen(i);
+}
+function step(d){ if (state.mode !== 'detail') return; const n = PRODUCTS.length; select((state.sel + d + n) % n); }
+function exitDetail(){
+  if (state.mode !== 'detail') return;
+  const g = garments[state.sel]; state.mode = 'rack'; state.leaving = state.sel; state.sel = -1; state.side = 'front';
+  document.body.classList.remove('detail', 'ongarment');
+  gsap.to(g.flip.rotation, { y:0, duration:.8, ease:'power2.inOut', overwrite:true }); g.thv += .8;
+  hideTags();
+  gsap.to('#detail', { opacity:0, y:10, duration:.3, ease:'power2.in', overwrite:'auto' });
+  gsap.to(state, { blur:0, fade:0, duration:1.0, ease:'power2.inOut', overwrite:'auto', onComplete:() => { if (state.mode === 'rack' && state.leaving >= 0){ setLayer(garments[state.leaving], 0); state.leaving = -1; } } });
+  hint.style.opacity = 1;
+}
+function showTags(){ gsap.fromTo(tagRoot.scale, { x:.001, y:.001, z:.001 }, { x:1, y:1, z:1, duration:.8, delay:.35, ease:'back.out(1.8)', overwrite:true }); tags.forEach((t, k) => { t.thv += (k ? -2.5 : 2.5); t.twv += 3; }); }
+function hideTags(){ gsap.to(tagRoot.scale, { x:.001, y:.001, z:.001, duration:.3, ease:'power2.in', overwrite:true }); }
+function setSide(side){
+  if (state.mode !== 'detail' || state.side === side) return;
+  state.side = side; const g = garments[state.sel];
+  gsap.to(g.flip.rotation, { y:side === 'back' ? Math.PI : 0, duration:1.05, ease:'power3.inOut', overwrite:true });
+  g.phv += .5; tags.forEach(t => t.twv += side === 'back' ? -4 : 4);
+  updateDetailUI();
+}
+function cycleVariant(d){ if (state.mode !== 'detail') return; const g = garments[state.sel], n = g.P.variants.length; setVariant((g.variant + d + n) % n); }
+function setVariant(k){
+  const g = garments[state.sel]; if (!g || k === g.variant) return;
+  if (g.wipeTween) g.wipeTween.progress(1);
+  const tex = ensureTex(g.i, k); g.variant = k;
+  g.m2F.value = tex.front; g.m2B.value = tex.back; g.wipe.value = .0001;
+  g.wipeTween = gsap.to(g.wipe, { value:1, duration:.95, ease:'power2.inOut', onComplete:() => { g.matF.map = tex.front; g.matB.map = tex.back; g.wipe.value = 0; g.wipeTween = null; } });
+  g.phv += .9; g.thv += .3; tags.forEach(t => t.thv += 1.4);
+  setKraft(g); updateDetailUI();
+  gsap.fromTo('#vname', { opacity:0, y:4 }, { opacity:1, y:0, duration:.4 });
+}
+const pregenQ = [];
+function pregen(i){ PRODUCTS[i].variants.forEach((_, k) => { if (!TEX[i][k]) pregenQ.push([i, k]); }); }
+setInterval(() => { const job = pregenQ.shift(); if (job) ensureTex(job[0], job[1]); }, 120);
+
+/* availability sheet */
+const SIZES = ['XS','S','M','L','XL','XXL'];
+function stock(P, v, s){ const r = mulberry(hashStr(P.id + v + s))(); return r < .18 ? 'out' : r < .45 ? 'low' : 'ok'; }
+function openSheet(forceList){
+  const body = $('#shBody'); const idx = state.mode === 'detail' ? state.sel : state.hovered;
+  if (idx >= 0 && !forceList){
+    const g = garments[idx], v = g.P.variants[g.variant];
+    $('#shTitle').textContent = g.P.name; $('#shSub').textContent = `${v.name} · ${g.P.price} · ${DROP}`;
+    body.innerHTML = `<div class="sizes">${SIZES.map(s => { const st = stock(g.P, g.variant, s); return `<div class="size ${st}" data-s="${s}">${s}<small>${st === 'out' ? 'Sold out' : st === 'low' ? 'Low' : 'In stock'}</small></div>`; }).join('')}</div><button class="cta" id="addBag">SELECT A SIZE</button>`;
+    let chosen = null; const cta = $('#addBag');
+    body.querySelectorAll('.size:not(.out)').forEach(el => el.onclick = () => { body.querySelectorAll('.size').forEach(q => q.classList.remove('sel')); el.classList.add('sel'); chosen = el.dataset.s; cta.textContent = `ADD ${chosen} TO BAG`; cta.classList.remove('done'); });
+    cta.onclick = () => { if (!chosen) return; bag++; $('#bagN').textContent = bag; cta.textContent = 'ADDED ✓'; cta.classList.add('done'); };
+  } else {
+    $('#shTitle').textContent = `${BRAND} — ${DROP}`; $('#shSub').textContent = 'Every piece on the rack, live stock.';
+    body.innerHTML = `<div class="list">${garments.map(g => { const n = SIZES.filter(s => stock(g.P, g.variant, s) !== 'out').length; return `<div class="row" data-i="${g.i}"><span>${g.P.name}<br><small style="color:#888;font-weight:500">${g.P.variants.length} colours · ${g.P.price}</small></span><span class="st ${n > 3 ? 'ok' : ''}">${n}/6 SIZES</span></div>`; }).join('')}</div>`;
+    body.querySelectorAll('.row').forEach(r => r.onclick = () => { closeSheet(); setTimeout(() => select(+r.dataset.i), 250); });
+  }
+  $('#sheet').classList.add('open');
+}
+function closeSheet(){ $('#sheet').classList.remove('open'); }
+$('#avail').onclick = () => openSheet(false);
+$('#shClose').onclick = closeSheet; $('#sheet .scrim').onclick = closeSheet;
+
+/* ---------------- frame loop ---------------- */
+const clock = new THREE.Clock(); let time = 0;
+const IDLE_TURN = 1.2;
+function update(dt){
+  time += dt;
+  const cx = state.mode === 'rack' ? ptr.nx * .12 : ptr.nx * .05, cy = ptr.ny * .06;
+  camera.position.x += (cx - camera.position.x) * damp(3, dt); camera.position.y += (L.camY + cy - camera.position.y) * damp(3, dt);
+  camera.lookAt(camera.position.x * .4, L.camY, 0);
+  let total = 0;
+  for (const g of garments){ const tgt = state.mode === 'rack' && state.hovered === g.i ? 1 : 0; g.hover += (tgt - g.hover) * damp(7, dt); g.w = L.slot + (HOVER_SLOT - L.slot) * g.hover; total += g.w; }
+  const excess = Math.max(0, total + .4 - L.halfW * 2 * .96);
+  if (!isTouch && state.mode === 'rack' && ptr.has && excess > 0) state.panT = -ptr.nx * excess / 2 * 1.1;
+  state.panT = clamp(state.panT, -excess / 2, excess / 2);
+  state.pan += (state.panT - state.pan) * damp(6, dt);
+  let acc = -total / 2 + state.pan; const sel = state.sel;
+  for (const g of garments){
+    let tx, ty = 0, tz = 0, turnT, turnX = 0;
+    const slotX = acc + g.w / 2; acc += g.w;
+    if (state.mode === 'detail'){
+      if (g.i === sel){
+        tx = L.selX; tz = L.D - L.dSel; ty = L.selCenterY + HOOK + g.S.H / 2;
+        turnT = isTouch ? Math.sin(time * .6) * .12 : ptr.nx * .42; turnX = isTouch ? 0 : -ptr.ny * .1;
+      } else {
+        const n = g.i < sel ? sel - g.i - 1 : g.i - sel - 1, s = g.i < sel ? -1 : 1;
+        tx = s * (L.halfW * .9 + n * .75); tz = -.4 - n * .2; turnT = IDLE_TURN;
+      }
+    } else { tx = slotX; turnT = IDLE_TURN * (1 - g.hover); tz = g.hover * .12; }
+    ty += g.intro;
+    const k = state.mode === 'detail' || state.leaving >= 0 ? 4.2 : 7;
+    const nx = g.x + (tx - g.x) * damp(k, dt), nvx = (nx - g.x) / Math.max(dt, 1e-4);
+    const ax = (nvx - g.vx) / Math.max(dt, 1e-4); g.vx = nvx; g.x = nx;
+    g.y = state.introDone ? g.y + (ty - g.y) * damp(4.5, dt) : ty; g.z += (tz - g.z) * damp(4.2, dt);
+    g.root.position.set(g.x, g.y, g.z);
+    g.thv += (-26 * g.th - 2.1 * g.thv - clamp(ax, -60, 60) * .022) * dt;
+    g.phv += (-24 * g.ph - 2.3 * g.phv) * dt;
+    g.thv = clamp(g.thv, -4, 4); g.phv = clamp(g.phv, -4, 4);
+    g.th = clamp(g.th + g.thv * dt, -.55, .55); g.ph = clamp(g.ph + g.phv * dt, -.5, .5);
+    g.swing.rotation.z = g.th + Math.sin(time * .9 + g.i * 1.7) * .006; g.swing.rotation.x = g.ph;
+    const prevTurn = g.turn.rotation.y;
+    g.turn.rotation.y += (turnT - g.turn.rotation.y) * damp(state.mode === 'detail' && g.i === sel ? 5 : 6, dt);
+    g.turn.rotation.x += (turnX - g.turn.rotation.x) * damp(5, dt);
+    g.turnVel = (g.turn.rotation.y - prevTurn) / Math.max(dt, 1e-4);
+    g.U.uBend.value.set(clamp(-g.thv * .07, -.12, .12), clamp(-g.phv * .07, -.12, .12));
+    g.U.uRipple.value += (clamp(Math.abs(g.thv) * .45 + Math.abs(g.phv) * .3 + Math.abs(nvx) * .06, 0, 1) - g.U.uRipple.value) * damp(4, dt);
+    g.U.uTime.value = time;
+  }
+  if (tagRoot.scale.x > .01){
+    const g = garments.find(q => q.turn === tagRoot.parent);
+    for (const t of tags){
+      t.thv += (-30 * t.th - 1.6 * t.thv - (g ? g.thv * 1.1 + g.turnVel * .3 : 0)) * dt;
+      t.twv += (-22 * t.tw - 1.4 * t.twv - (g ? g.turnVel * 2.2 : 0)) * dt;
+      t.th = clamp(t.th + t.thv * dt, -.8, .8); t.tw = clamp(t.tw + t.twv * dt, -1.2, 1.2);
+      t.pivot.rotation.z = t.th; t.pivot.rotation.y = t.tw;
+    }
+  }
+  rodMat.opacity = 1 - state.fade * .97; rodG.visible = rodMat.opacity > .02;
+}
+function render(){
+  if (state.blur < .002){ camera.layers.enableAll(); renderer.setRenderTarget(null); renderer.clear(); renderer.render(scene, camera); return; }
+  camera.layers.set(0);
+  renderer.setRenderTarget(rtSharp); renderer.clear(); renderer.render(scene, camera);
+  quad.material = blurMat; blurMat.uniforms.uRes.value.set(rtA.width, rtA.height);
+  const k = state.blur * (Math.min(rtA.width, rtA.height) / 500);
+  let src = rtSharp.texture;
+  for (const s of [1, 2, 3, 4.5]){
+    blurMat.uniforms.tDiffuse.value = src; blurMat.uniforms.uDir.value.set(s * k, 0); renderer.setRenderTarget(rtA); renderer.render(quadScene, quadCam);
+    blurMat.uniforms.tDiffuse.value = rtA.texture; blurMat.uniforms.uDir.value.set(0, s * k); renderer.setRenderTarget(rtB); renderer.render(quadScene, quadCam);
+    src = rtB.texture;
+  }
+  quad.material = compMat; compMat.uniforms.tSharp.value = rtSharp.texture; compMat.uniforms.tBlur.value = rtB.texture;
+  compMat.uniforms.uAmt.value = state.blur; compMat.uniforms.uFade.value = state.fade * .28;
+  renderer.setRenderTarget(null); renderer.clear(); renderer.render(quadScene, quadCam);
+  renderer.clearDepth(); camera.layers.set(1); renderer.render(scene, camera); camera.layers.enableAll();
+}
+const SIM_MAX = /[?&]sim=1/.test(location.search) ? .6 : .1;
+function frame(){
+  let dt = Math.min(clock.getDelta(), SIM_MAX);
+  while (dt > 1e-5){ const s = Math.min(dt, 1 / 60); update(s); dt -= s; }
+  render(); requestAnimationFrame(frame);
+}
+
+let a0 = -PRODUCTS.length * L.slot / 2; for (const g of garments){ g.x = a0 + L.slot / 2; a0 += L.slot; g.y = g.intro; g.turn.rotation.y = IDLE_TURN; g.w = L.slot; }
+setLoad(1);
+renderer.compile(scene, camera);
+frame();
+gsap.to('#loader', { opacity:0, duration:.6, delay:.15, onComplete:() => $('#loader').remove() });
+gsap.from('#logo', { y:-40, scale:.6, opacity:0, duration:1, delay:.3, ease:'back.out(2)' });
+gsap.from(['#avail', '#bar', '.corner', '#hint'], { y:20, opacity:0, duration:.8, delay:.5, stagger:.06, ease:'power3.out' });
+garments.forEach((g, i) => gsap.to(g, { intro:0, duration:1.1, delay:.35 + i * .085, ease:'power3.out', onComplete:() => { g.thv += (i % 2 ? 1 : -1) * 1.1; g.phv += .9; if (i === garments.length - 1) state.introDone = true; } }));
+
+window.__rack = { select, exitDetail, setSide, setVariant, cycleVariant, step, state, garments, setHover };
+}
+boot().catch(e => { console.error(e); const el = $('#err'); el.style.display = 'grid'; el.textContent = 'Something went wrong loading the rack.'; });
+</script>
+</body>
+</html>
